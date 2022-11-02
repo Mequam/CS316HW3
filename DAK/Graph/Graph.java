@@ -10,5 +10,6 @@ public abstract class Graph {
     abstract public void addEdge(int nodeA,int nodeB,int wieght);
     abstract public int nodeCount();
     abstract public int getEdgeWeight(int nodeA,int nodeB);
+    abstract public int weight();
 
 }

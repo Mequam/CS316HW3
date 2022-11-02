@@ -19,6 +19,34 @@ public class AdjGraph extends Graph{
         return edges[nodeA][nodeB];
     }
 
+    @Override
+    public int weight() {
+        int ret_val = 0;
+        for (int i = 0; i < nodeCount();i++)  {
+            for (int j = 0; j < nodeCount();j++) {
+                ret_val += edges[i][j];
+            }
+        }
+
+        return ret_val;
+    }
+    /** 
+     * returns the wieght in the case that
+     * the edges do not contain direction information
+    */
+    public int wieghtSym() {
+        int ret_val = 0;
+        for (int i = 0; i < nodeCount();i++)  {
+            //note that j starts at i here
+            //this has the effect of making the for loops
+            //look like a "triangle" as apposed to a square
+            for (int j = i; j < nodeCount();j++) {
+                ret_val += edges[i][j];
+            }
+        }
+        return ret_val;
+    }
+
     public void addEdge(int nodeA,int nodeB,int weight) {
         edges[nodeA][nodeB] = weight;
     } 
@@ -60,6 +88,11 @@ public class AdjGraph extends Graph{
         g.addEdgeSym(4, 5,1);
         
         System.out.println(g);
+
+        AdjGraph minTree = (AdjGraph)minSpanTree(g);
+        System.out.println(minTree);
+        System.out.println(minTree.wieghtSym());
+        
     }
 
     /** 
@@ -74,7 +107,8 @@ public class AdjGraph extends Graph{
 
 
         //theres got to be a better way to do this
-        for (int i = 0; i < g.nodeCount();i+=1) {
+        int runs = g.nodeCount() - 1;
+        for (int i = 0; i < runs;i+=1) {
             int least_edge = -1;
             int least_next_node = -1;
             int least_from_node = -1;
@@ -83,8 +117,9 @@ public class AdjGraph extends Graph{
                 for (int j = 0; j < g.nodeCount(); j++) {
                     if (!boundry.contains(j)) { //the node j is outside the boundry
                         int out_edge = g.getEdgeWeight(boundry.get(boundry_idx),j); //this is the bridge that sends us to j
-                        if (least_edge == -1 || out_edge < least_edge) { //if that bridge has weight less than our least wieght
-                            
+                        if ((out_edge != 0) && 
+                            (least_edge == -1 || out_edge < least_edge)) { //if that bridge has weight less than our least wieght
+ 
                             least_edge = out_edge; //get the new best node
                             least_next_node = j; //get the new best node
                             least_from_node = boundry.get(boundry_idx);//get the new best node
@@ -95,7 +130,7 @@ public class AdjGraph extends Graph{
             }
             
             //add the given edge to the tree 
-            ret_val.addEdge(least_from_node,least_next_node);
+            ret_val.addEdgeSym(least_from_node,least_next_node,least_edge);
             //add the next node to the boundry
             boundry.add(least_next_node);
         }
