@@ -4,6 +4,9 @@ package DAK.Graph;
  * generic class that represents a graph
 */
 public abstract class Graph {
+    /** 
+     * an entry in the table used in dijkstras algorithm
+    */
     public void addEdge(int nodeA,int nodeB) {
         addEdge(nodeA, nodeB,1);
     }
