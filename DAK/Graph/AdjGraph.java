@@ -97,35 +97,11 @@ public class AdjGraph extends Graph{
         File f = new File("./input.txt");
         try {
             AdjGraph g = new AdjGraph(f);
-            AdjGraph minTree = (AdjGraph)minSpanTree(g);
-            System.out.println(g);
+            AdjGraph minTree = (AdjGraph)minSpanTree(g); 
             System.out.println(minTree);
-            System.out.println(minTree.wieghtSym());
-
-
         } catch (Exception e) {
             System.out.println(e);
         }
-        //g.addEdgeSym(0, 1,4);
-        //g.addEdgeSym(0, 5,8);
-        //g.addEdgeSym(1, 0,4);
-        //g.addEdgeSym(1, 2,7);
-        //g.addEdgeSym(1, 5,11);
-        //g.addEdgeSym(2, 1,7);
-        //g.addEdgeSym(2, 3,2);
-        //g.addEdgeSym(2, 4,3); 
-        //g.addEdgeSym(3, 2,2);
-        //g.addEdgeSym(3, 4,6);
-        //g.addEdgeSym(3, 5,7);
-        //g.addEdgeSym(4, 2,3);
-        //g.addEdgeSym(4, 3,6);
-        //g.addEdgeSym(4, 5,1);
-        
-        //System.out.println(g);
-
-        //AdjGraph minTree = (AdjGraph)minSpanTree(g);
-        //System.out.println(minTree);
-        //System.out.println(minTree.wieghtSym());
     }
 
     /** 
