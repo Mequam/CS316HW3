@@ -27,12 +27,9 @@ public class AdjGraph extends Graph{
         String [] split_line = cin.nextLine().split(" ");
         load_size(split_line.length);//initilize the adjecency matrix
    
-        System.out.println("[AdjGraph] size " + Integer.toString(nodeCount()));
         //we run while we can read and dont overflow
         for (int i = 0; i < nodeCount(); i++) {
-            System.out.println("[AdjGraph] Loading Edge " + Integer.toString(i));
             for (int j = 0; j < nodeCount();j++) {
-
                 edges[i][j] = Integer.parseInt(split_line[j]);
             }
             if (cin.hasNextLine()) split_line = cin.nextLine().split(" ");
@@ -181,50 +178,66 @@ public class AdjGraph extends Graph{
     }
 
     public static List<DijkstrasEntry> dijkstras(AdjGraph g,int initial_node) {
+        
         List<DijkstrasEntry> ret_val = new ArrayList<DijkstrasEntry>();
         List<Integer> visited = new ArrayList<Integer>();
         
-        
+        //initilize the table with starting values
+
         for (int i = 0; i < g.nodeCount();i++) {
+            //use Integer.MAX_VALUE as infinity for convinence
+            //-1 indicates no previous parent
             ret_val.add(new DijkstrasEntry(i,-1,Integer.MAX_VALUE));
         }
+        
         //make sure that the initial node has 0 distance from itself
         //and no previous node
         ret_val.get(initial_node).distance = 0;
         ret_val.get(initial_node).previous = -1; 
 
+
+        //since dijkstras finishes when we visit every node,
+        //and we visit one new node each iteration,
+        //we need to iterate the algorithm once for each node we have
         for (int o = 0; o < g.nodeCount();o++) {
 
             //get the lowest non visited node
             //this should really be a priority queue or some other data structure
             //but this works for only 10 nodes
             
-            //get the first node that we have not visited
-            int lowest = 0;
-            while (visited.contains(lowest)) {
-                lowest += 1;
-            }
-
-            for (int i = 0; i < g.nodeCount();i++){
-                if (!visited.contains(i) && ret_val.get(i).distance < ret_val.get(lowest).distance) {
-                    lowest = i;
+                //get the first node that we have not visited
+                int lowest = 0;
+                while (visited.contains(lowest)) {
+                    lowest += 1;
                 }
-            }
 
-            System.out.println("visiting " + Integer.toString(lowest));
+                //loop over the nodes and get the lowest one that has not been visited
+                for (int i = 0; i < g.nodeCount();i++){
+                    if (!visited.contains(i) && ret_val.get(i).distance < ret_val.get(lowest).distance) {
+                        lowest = i;
+                    }
+                }
+
             //we visited this node
             visited.add(lowest);
 
             //loop over the connections of the focus node
             //and update the lowest connection
             for (int i = 0; i < g.nodeCount();i+=1) {
+                //the distance from this node out to another given node
                 int test_val = ret_val.get(lowest).distance + g.edges[lowest][i];
-                if (g.edges[lowest][i] != 0 && test_val < ret_val.get(i).distance) {
-                    ret_val.get(i).distance = test_val;
-                    ret_val.get(i).previous = lowest;
+                if (g.edges[lowest][i] != 0 && //the edge exists
+                    test_val < ret_val.get(i).distance // and our walk to it is less than the current walk
+                    ) {
+
+                        //update the entry in the table
+                        ret_val.get(i).distance = test_val;
+                        ret_val.get(i).previous = lowest;
                 }
             }
         }
+
+        //return the table
         return ret_val;
     }
 }
