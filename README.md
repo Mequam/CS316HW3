@@ -19,6 +19,8 @@ the solution to problem 1 is located in the txtproblems folder under two differe
 - txtproblems/prob1.svg
 - txtproblems/prob1.png
 
+screenshots of program outputs from problems 2 and 3 are located in the outputScreenshots folder
+
 
 ## Compilation
 
